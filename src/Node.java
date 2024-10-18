@@ -3,9 +3,9 @@ package ToDoListManager;
 public class Node {
     // Node class to represent a node in the linked list
     Task task;
-    TaskNode next;
+    Node next;
 
-    public TaskNode(Task task) {
+    public Node(Task task) {
         this.task = task;
         this.next = null;
     }
