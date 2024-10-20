@@ -1,7 +1,6 @@
 package ToDoListManager;
 
 public class Node {
-    // Node class to represent a node in the linked list
     Task task;
     Node next;
 

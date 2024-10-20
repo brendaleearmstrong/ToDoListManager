@@ -1,21 +1,21 @@
 package ToDoListManager;
 
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String description;
     private boolean isCompleted;
 
-    // Constructor to create a task
     public Task(String description) {
         this.description = description;
         this.isCompleted = false;
     }
 
-    // Getters
     public String getDescription() {
         return description;
     }
 
-    // Method to mark a task as completed
     public boolean isCompleted() {
         return isCompleted;
     }

@@ -1,7 +1,13 @@
 package ToDoListManager;
 
-public class TaskList {
-    private class Node {
+import java.io.Serializable;
+
+public class TaskList implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private Node head;
+
+    private class Node implements Serializable {
+        private static final long serialVersionUID = 1L;
         Task task;
         Node next;
         Node prev;
@@ -13,13 +19,6 @@ public class TaskList {
         }
     }
 
-    private Node head;
-
-    public TaskList() {
-        this.head = null;
-    }
-
-    // Method to add a task to the task list
     public void addTask(Task task) {
         Node newNode = new Node(task);
         if (head == null) {
@@ -34,68 +33,67 @@ public class TaskList {
         }
     }
 
-    // Method to mark a task as completed
-    public void markTaskAsCompleted(String description) {
+    public void markTaskAsCompleted(int index) {
         Node current = head;
-        while (current != null) {
-            if (current.task.getDescription().equals(description)) {
-                current.task.markAsCompleted();
-                return;
-            }
+        for (int i = 0; i < index && current != null; i++) {
             current = current.next;
         }
-        System.out.println("Task not found: " + description);
+        if (current != null) {
+            current.task.markAsCompleted();
+        }
     }
 
-    // Method to delete a task from the task list
-    public void deleteTask(int position) {
-        if (head == null) {
-            System.out.println("Task list is empty.");
+    public void deleteTask(int index) {
+        if (head == null || index < 0) {
             return;
         }
 
-        // If the task to be deleted is at the head
-        Node current = head;
-        int currentIndex = 0;
-
-        // Find the task to be deleted
-        while (current != null && currentIndex != position) {
-            current = current.next;
-            currentIndex++;
-        }
-
-        // If the task is not found
-        if (current == null) {
-            System.out.println("Task not found at position: " + position);
-            return;
-        }
-
-        // If the task to be deleted is at the head
-        if (current.prev == null) {
-            head = current.next;
+        if (index == 0) {
+            head = head.next;
             if (head != null) {
                 head.prev = null;
             }
-        } else {
-            current.prev.next = current.next;
-            if (current.next != null) {
-                current.next.prev = current.prev;
-            }
+            return;
         }
 
-        // Ensure the deleted node's pointers are set to null
-        current.next = null;
-        current.prev = null;
+        Node current = head;
+        for (int i = 0; i < index && current != null; i++) {
+            current = current.next;
+        }
+
+        if (current == null) {
+            return;
+        }
+
+        if (current.prev != null) {
+            current.prev.next = current.next;
+        }
+        if (current.next != null) {
+            current.next.prev = current.prev;
+        }
     }
 
-    // Method to print all the tasks in the task list
     public void printTasks() {
         Node current = head;
-        int index = 0;
+        int index = 1;
         while (current != null) {
-            System.out.println(index + ": " + current.task);
+            System.out.println(index + ". " + current.task);
             current = current.next;
             index++;
         }
+    }
+
+    public int size() {
+        int count = 0;
+        Node current = head;
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+        return count;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
     }
 }
